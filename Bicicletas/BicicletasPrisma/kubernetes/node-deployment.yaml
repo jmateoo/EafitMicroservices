@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node
+  labels:
+    name: node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node
+  template:
+    metadata:
+      labels:
+        app: node
+    spec:
+      containers:
+      - name: node
+        image: gcr.io/eafitkubernetes/bicycle
+        ports:
+        - containerPort: 4000
+        env:
+        - name: NODE_ENV
+          value: "development"
+        - name: PORT
+          value: "4000"
+        - name: DATABASE_URL
+          value: "file:./db.sqlite3"
+        - name: FRONTEND_URL
+          value: "http://34.27.20.205:3000"
+      restartPolicy: Always

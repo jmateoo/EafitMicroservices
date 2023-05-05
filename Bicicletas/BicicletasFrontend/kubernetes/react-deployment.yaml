@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-js-deployment
+  labels:
+    name: react-js
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: react-js
+  template:
+    metadata:
+      labels:
+        app: react-js
+    spec:
+      containers:
+      - name: react-js
+        image: gcr.io/eafitkubernetes/bicycle-frontend
+        ports:
+        - containerPort: 3000
+        env:
+        - name: PORT
+          value: "3000"
+        - name: REACT_APP_HOST
+          value: "http://34.27.20.205:4000"
+      restartPolicy: Always

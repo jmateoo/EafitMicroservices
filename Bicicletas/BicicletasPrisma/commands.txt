@@ -1,0 +1,34 @@
+# create dockerignore and Dockerfile
+# cd to the backend directory
+gcloud builds submit --tag gcr.io/eafitkubernetes/bicycle
+
+cd ../BicicletasFrontend
+gcloud builds submit --tag gcr.io/eafitkubernetes/bicycle-frontend
+
+cd ../BicicletasPrisma
+
+gcloud compute addresses create bicycle-ip --global
+gcloud compute addresses create bicycle-ip --region us-central1
+
+gcloud container clusters create node-kubernetes --num-nodes=3 --zone us-central1-a --machine-type e2-small --disk-size 10
+gcloud container clusters get-credentials node-kubernetes --zone us-central1-a
+
+cd E:\Work\Eafit\bicycle_node_js_mateo\RedBicicletas\BicicletasPrisma
+E:
+kubectl apply -f ./kubernetes/node-deployment.yaml
+kubectl apply -f ./kubernetes/node-service.yaml
+kubectl get service
+kubectl get deployments
+kubectl get pods
+kubectl logs node-cdcd4c8df-nzcxq
+
+kubectl apply -f ../BicicletasFrontend/kubernetes/react-deployment.yaml
+kubectl apply -f ../BicicletasFrontend/kubernetes/react-service.yaml
+
+kubectl delete -f ./kubernetes/node-deployment.yaml
+kubectl delete -f ./kubernetes/node-service.yaml
+
+kubectl delete -f ../BicicletasFrontend/kubernetes/react-service.yaml
+kubectl delete -f ../BicicletasFrontend/kubernetes/react-deployment.yaml
+
+kubectl rollout restart deployment node

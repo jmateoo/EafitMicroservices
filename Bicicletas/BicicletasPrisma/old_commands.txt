@@ -1,0 +1,10 @@
+# create dockerignore and Dockerfile
+# cd to the backend directory
+gcloud builds submit --tag gcr.io/eafitkubernetes/bicycle
+gcloud container clusters create bicycle-cluster --disk-size 10 --num-nodes 1 --enable-autoscaling --min-nodes 1 --max-nodes 2 --zone us-central1-a
+gcloud compute addresses create bicycle-ip --global
+# create kubernetes yaml configs
+gcloud container clusters get-credentials bicycle-cluster --zone us-central1-a
+cd E:\Work\Eafit\bicycle_node_js_mateo\RedBicicletas\
+E:
+kubectl apply -f k8s/
